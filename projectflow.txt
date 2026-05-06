@@ -1,0 +1,55 @@
+1. Setup the virtual environment
+    >> run `python -m venv .venv`
+    >> run `.\.venv\Scripts\Activate.ps1`
+
+2. Creating the project template
+    >> run `python template.py`.
+
+3. Install required packages and modules
+    >> run `pip install -r requirements.txt`
+    >> verify installation `pip list`
+
+4. Coding sequence should be:
+
+    1. Build `data_loader.py`
+        >> Goal:
+            >> Load all .md and .json files recursively from your data/ directory and inspect them.
+        >> Your immediate objectives:
+            >> Traverse folders recursively
+            >> Read markdown files
+            >> Read JSON files
+            >> Store them in a structured format
+            >> Print loaded outputs for debugging
+        >> After loading:
+            >> print total documents
+            >> print file paths
+            >> print sample contents
+
+    2. Build chunking.py
+        >> Goal:
+            >> Split large documents into smaller retrievable chunks.
+        >> You now need to learn:
+            >> why chunking matters
+            >> chunk size effects
+            >> overlap effects
+            >> semantic continuity
+        >> Print chunks and visually inspect:
+            >> where splits occur
+            >> whether sentences break badly
+            >> whether important context gets lost
+    This stage strongly affects retrieval quality later.
+
+    3. embedding.py
+    4. vector_store.py
+    5. retriever.py
+    6. prompt_builder.py
+    7. generator.py
+    8. main.py
+    
+    At every step:
+        print intermediate outputs
+        inspect structures
+        inspect dimensions
+        inspect chunk boundaries
+        inspect retrieval scores
+        inspect prompts

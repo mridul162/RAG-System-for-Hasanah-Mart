@@ -1,0 +1,18 @@
+# OpenAI API
+openai
+
+# Vector Database
+faiss-cpu
+
+# Numerical Operations
+numpy
+
+# Environment Variable Management
+python-dotenv
+
+# Progress Bars / Debugging
+tqdm
+
+# Optional but Useful
+pandas
+scikit-learn
