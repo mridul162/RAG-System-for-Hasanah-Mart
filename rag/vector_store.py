@@ -7,6 +7,7 @@ import pickle
 from rag.data_loader import load_documents
 from rag.chunking import chunk_documents
 from rag.embedding import create_embeddings
+from api.core.config import settings
 
 
 def create_faiss_index(embedded_chunks):
@@ -47,8 +48,8 @@ def create_faiss_index(embedded_chunks):
 
 def save_faiss_index(index,
                      embedded_chunks,
-                     index_path="vector_db/faiss_index.index",
-                     metadata_path="vector_db/chunks_metadata.pkl"):
+                     index_path=settings.faiss_index_path,
+                     metadata_path=settings.metadata_path):
     """
     Save FAISS index and metadata.
     """
@@ -65,8 +66,8 @@ def save_faiss_index(index,
     print(f"Metadata Path : {metadata_path}")
 
 
-def load_faiss_index(index_path="vector_db/faiss_index.index",
-                     metadata_path="vector_db/chunks_metadata.pkl"):
+def load_faiss_index(index_path=settings.faiss_index_path,
+                     metadata_path=settings.metadata_path):
     """
     Load FAISS index and metadata.
     """

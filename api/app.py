@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes.chat import router as chat_router
 from api.services.rag_service import RAGService
+from api.core.config import settings
 
 
 # ---------------------------------------------------
@@ -20,7 +21,10 @@ async def lifespan(app: FastAPI):
     # Startup
     # ---------------------------------------------
     print("\n" + "=" * 60)
-    print("STARTING HASANAH MART RAG API")
+    print(
+    f"STARTING {settings.app_name} "
+    f"v{settings.app_version}"
+    )
     print("=" * 60)
 
     # Initialize shared RAG service
@@ -43,15 +47,15 @@ async def lifespan(app: FastAPI):
 # ---------------------------------------------------
 
 app = FastAPI(
-    title="Hasanah Mart RAG API",
+    title=settings.app_name,
 
     description=(
         "RAG-powered AI assistant for "
         "Hasanah Mart organic food business."
     ),
 
-    version="1.0.0",
-
+    version=settings.app_version,
+    debug=settings.debug,
     lifespan=lifespan
 )
 
@@ -63,7 +67,7 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
 
-    allow_origins=["*"],
+    allow_origins=settings.allowed_origins,
 
     allow_credentials=True,
 
@@ -81,9 +85,10 @@ app.add_middleware(
 def root():
 
     return {
-        "message": (
-            "Hasanah Mart RAG API is running."
-        )
+    "message": (
+        f"{settings.app_name} is running."
+    ),
+    "version": settings.app_version
     }
 
 
@@ -91,7 +96,9 @@ def root():
 def health_check():
 
     return {
-        "status": "healthy"
+    "status": "healthy",
+    "service": settings.app_name,
+    "version": settings.app_version
     }
 
 

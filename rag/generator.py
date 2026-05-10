@@ -7,6 +7,7 @@ import os
 from rag.vector_store import load_faiss_index
 from rag.retriever import retrieve_chunks
 from rag.prompt_builder import build_prompt
+from api.core.config import settings
 
 # ---------------------------------
 # Load Environment Variables
@@ -17,17 +18,17 @@ load_dotenv()
 # Initialize OpenAI Client
 # ---------------------------------
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=settings.openai_api_key
 )
 
 # ---------------------------------
 # Chat Model
 # ---------------------------------
-CHAT_MODEL = "gpt-4.1-mini"
+CHAT_MODEL = settings.chat_model
 
 
 def generate_answer(prompt,
-                    temperature=0.2):
+                    temperature=settings.temperature):
     """
     Generate answer from OpenAI model.
     """

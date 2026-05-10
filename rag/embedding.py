@@ -4,6 +4,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from rag.data_loader import load_documents
 from rag.chunking import chunk_documents
+from api.core.config import settings
 
 import os
 import time
@@ -13,11 +14,11 @@ load_dotenv(override=True)
 
 # Initialize OpenAI client
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
+    api_key=settings.openai_api_key
 )
 
 # Embedding model
-EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_MODEL = settings.embedding_model
 
 
 def create_embedding(text):
