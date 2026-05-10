@@ -2,23 +2,18 @@
 
 from rag.data_loader import load_documents
 
-
 def chunk_text(text, chunk_size=500, chunk_overlap=100):
     """
     Split a single text into overlapping chunks.
     """
 
     chunks = []
-
     start = 0
     text_length = len(text)
 
     while start < text_length:
-
         end = start + chunk_size
-
         chunk = text[start:end]
-
         chunks.append(chunk)
 
         # Move start forward with overlap
@@ -35,23 +30,18 @@ def chunk_documents(documents,
     """
 
     all_chunks = []
-
     chunk_id = 0
-
     for doc in documents:
-
         # -----------------------------
         # Handle Markdown Content
         # -----------------------------
         if doc["type"] == "markdown":
-
             text = doc["content"]
 
         # -----------------------------
         # Handle JSON Content
         # -----------------------------
         elif doc["type"] == "json":
-
             text = str(doc["content"])
 
         else:
@@ -66,7 +56,6 @@ def chunk_documents(documents,
 
         # Store chunk metadata
         for chunk in chunks:
-
             all_chunks.append({
                 "chunk_id": chunk_id,
                 "source": doc["source"],
@@ -75,7 +64,6 @@ def chunk_documents(documents,
             })
 
             chunk_id += 1
-
     return all_chunks
 
 
@@ -84,9 +72,7 @@ def chunk_documents(documents,
 # ---------------------------------------------------
 
 if __name__ == "__main__":
-
     documents = load_documents()
-
     chunks = chunk_documents(
         documents,
         chunk_size=500,
