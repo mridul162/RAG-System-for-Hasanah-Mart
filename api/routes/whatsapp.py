@@ -5,7 +5,10 @@ from fastapi import Request
 from fastapi.responses import PlainTextResponse
 
 from api.core.config import settings
+from api.core.logging import get_logger
 
+
+logger = get_logger(__name__)
 
 router = APIRouter(
     prefix="/webhooks/whatsapp",
@@ -49,3 +52,25 @@ async def verify_webhook(request: Request):
         content="Verification failed",
         status_code=403
     )
+
+# ---------------------------------------------------
+# Receive WhatsApp Events
+# ---------------------------------------------------
+
+@router.post("")
+
+async def receive_whatsapp_message(
+    request: Request
+):
+
+    payload = await request.json()
+
+    logger.info(
+        "Incoming WhatsApp webhook received."
+    )
+
+    logger.info(payload)
+
+    return {
+        "status": "received"
+    }
