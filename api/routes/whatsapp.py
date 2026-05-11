@@ -6,6 +6,7 @@ from fastapi.responses import PlainTextResponse
 
 from api.core.config import settings
 from api.core.logging import get_logger
+from api.services import rag_service
 from api.services.whatsapp_service import (
     send_whatsapp_message
 )
@@ -102,7 +103,7 @@ async def receive_whatsapp_message(
             to_number=sender_number,
 
             message=(
-                "Hello from Hasanah Mart AI!"
+                rag_service.ask()
             )
         )
 
