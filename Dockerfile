@@ -40,12 +40,12 @@ COPY . .
 # Expose Port
 # ---------------------------------------------------
 
-EXPOSE 8000
+EXPOSE 5000
 
 
 # ---------------------------------------------------
 # Start FastAPI Server
 # ---------------------------------------------------
 
-CMD ["python3", "app.py"]
-# CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
+# CMD ["python3", "app.py"]
+CMD ["python", "-m", "uvicorn", "api.app:app", "--host", "0.0.0.0", "--port", "5000"]

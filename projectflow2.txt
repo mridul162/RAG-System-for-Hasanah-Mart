@@ -23,6 +23,8 @@ Structured API Response
 Source Metadata Returned
     ↓
 Logging + Latency Tracking
+    ↓
+Dockerized Deployment
 
 ----------------------------------------
 
