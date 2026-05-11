@@ -48,6 +48,16 @@ class Settings(BaseSettings):
         alias="WHATSAPP_VERIFY_TOKEN"
     )
 
+    whatsapp_access_token: str = Field(
+        ...,
+        alias="WHATSAPP_ACCESS_TOKEN"
+    )
+
+    whatsapp_phone_number_id: str = Field(
+        ...,
+        alias="WHATSAPP_PHONE_NUMBER_ID"
+    )
+
 
     # -------------------------------------------------
     # VECTOR DATABASE

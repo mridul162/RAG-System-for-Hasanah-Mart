@@ -6,6 +6,9 @@ from fastapi.responses import PlainTextResponse
 
 from api.core.config import settings
 from api.core.logging import get_logger
+from api.services.whatsapp_service import (
+    send_whatsapp_message
+)
 
 
 logger = get_logger(__name__)
@@ -70,6 +73,42 @@ async def receive_whatsapp_message(
     )
 
     logger.info(payload)
+
+    try:
+
+        message = (
+            payload["entry"][0]
+            ["changes"][0]
+            ["value"]["messages"][0]
+        )
+
+        sender_number = message["from"]
+
+        message_text = (
+            message["text"]["body"]
+        )
+
+        logger.info(
+            f"Message from "
+            f"{sender_number}: "
+            f"{message_text}"
+        )
+
+        # -----------------------------------------
+        # Temporary Static Reply
+        # -----------------------------------------
+
+        send_whatsapp_message(
+            to_number=sender_number,
+
+            message=(
+                "Hello from Hasanah Mart AI!"
+            )
+        )
+
+    except Exception as e:
+
+        logger.error(str(e))
 
     return {
         "status": "received"
