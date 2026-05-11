@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from api.routes.chat import router as chat_router
 from api.services.rag_service import RAGService
 from api.core.config import settings
-
+from api.core.logging import setup_logging, get_logger
 
 # ---------------------------------------------------
 # Application Lifespan
@@ -20,31 +20,32 @@ async def lifespan(app: FastAPI):
     # ---------------------------------------------
     # Startup
     # ---------------------------------------------
-    print("\n" + "=" * 60)
-    print(
-    f"STARTING {settings.app_name} "
-    f"v{settings.app_version}"
+    logger.info(
+        f"Starting {settings.app_name} "
+        f"v{settings.app_version}"
     )
-    print("=" * 60)
 
     # Initialize shared RAG service
     app.state.rag_service = RAGService()
 
-    print("RAG service initialized!")
+    logger.info(
+        "RAG service initialized successfully."
+    )
 
     yield
 
     # ---------------------------------------------
     # Shutdown
     # ---------------------------------------------
-    print("\n" + "=" * 60)
-    print("SHUTTING DOWN API")
-    print("=" * 60)
+    logger.info("Shutting down API.")
 
 
 # ---------------------------------------------------
 # FastAPI App
 # ---------------------------------------------------
+
+setup_logging()
+logger = get_logger(__name__)
 
 app = FastAPI(
     title=settings.app_name,

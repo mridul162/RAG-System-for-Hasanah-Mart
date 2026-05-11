@@ -18,6 +18,12 @@ from api.dependencies import (
     get_rag_service
 )
 
+import dotenv
+dotenv.load_dotenv()
+
+from api.core.logging import get_logger
+
+logger = get_logger(__name__)
 
 # ---------------------------------------------------
 # Router
@@ -64,7 +70,11 @@ def ask_question(
 
     except Exception as e:
 
+        logger.exception(
+            "Error occurred while processing chat request."
+        )
+
         raise HTTPException(
             status_code=500,
-            detail=str(e)
+            detail="Internal server error."
         )
