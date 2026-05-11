@@ -30,7 +30,7 @@ class Settings(BaseSettings):
         alias="OPENAI_API_KEY"
     )
 
-    chat_model: str = "gpt-4.1-mini"
+    chat_model: str = "gpt-5.4-mini"
 
     embedding_model: str = (
         "text-embedding-3-small"
