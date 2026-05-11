@@ -9,6 +9,12 @@ from api.routes.chat import router as chat_router
 from api.services.rag_service import RAGService
 from api.core.config import settings
 from api.core.logging import setup_logging, get_logger
+from api.routes.whatsapp import (
+    router as whatsapp_router
+)
+app.include_router(
+    whatsapp_router
+)
 
 # ---------------------------------------------------
 # Application Lifespan
