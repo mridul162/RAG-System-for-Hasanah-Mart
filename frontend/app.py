@@ -3,6 +3,12 @@
 import requests
 import streamlit as st
 
+st.set_option(
+    'client.showErrorDetails',
+    False
+)
+
+BACKEND_NAME = "Hasanah Mart RAG API"
 
 # ---------------------------------------------------
 # CONFIG
@@ -59,6 +65,33 @@ for message in st.session_state.messages:
 # ---------------------------------------------------
 # USER INPUT
 # ---------------------------------------------------
+
+try:
+
+    health_response = requests.get(
+        "https://rag-system-for-hasanah-mart.onrender.com/health",
+        timeout=10
+    )
+
+    if health_response.status_code == 200:
+
+        st.success(
+            f"{BACKEND_NAME} connected"
+        )
+
+    else:
+
+        st.warning(
+            "Backend reachable but unhealthy."
+        )
+
+except Exception:
+
+    st.error(
+        "Backend API is currently unavailable."
+    )
+
+    st.stop()
 
 query = st.chat_input(
     "Type your question..."
