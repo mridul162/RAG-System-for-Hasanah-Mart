@@ -6,15 +6,27 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes.chat import router as chat_router
-from api.services.rag_service import RAGService
-from api.core.config import settings
-from api.core.logging import setup_logging, get_logger
 from api.routes.whatsapp import (
     router as whatsapp_router
 )
-app.include_router(
-    whatsapp_router
+
+from api.services.rag_service import RAGService
+
+from api.core.config import settings
+from api.core.logging import (
+    setup_logging,
+    get_logger
 )
+
+
+# ---------------------------------------------------
+# Setup Logging
+# ---------------------------------------------------
+
+setup_logging()
+
+logger = get_logger(__name__)
+
 
 # ---------------------------------------------------
 # Application Lifespan
@@ -26,6 +38,7 @@ async def lifespan(app: FastAPI):
     # ---------------------------------------------
     # Startup
     # ---------------------------------------------
+
     logger.info(
         f"Starting {settings.app_name} "
         f"v{settings.app_version}"
@@ -43,15 +56,13 @@ async def lifespan(app: FastAPI):
     # ---------------------------------------------
     # Shutdown
     # ---------------------------------------------
+
     logger.info("Shutting down API.")
 
 
 # ---------------------------------------------------
 # FastAPI App
 # ---------------------------------------------------
-
-setup_logging()
-logger = get_logger(__name__)
 
 app = FastAPI(
     title=settings.app_name,
@@ -62,7 +73,9 @@ app = FastAPI(
     ),
 
     version=settings.app_version,
+
     debug=settings.debug,
+
     lifespan=lifespan
 )
 
@@ -92,10 +105,11 @@ app.add_middleware(
 def root():
 
     return {
-    "message": (
-        f"{settings.app_name} is running."
-    ),
-    "version": settings.app_version
+        "message": (
+            f"{settings.app_name} is running."
+        ),
+
+        "version": settings.app_version
     }
 
 
@@ -103,9 +117,11 @@ def root():
 def health_check():
 
     return {
-    "status": "healthy",
-    "service": settings.app_name,
-    "version": settings.app_version
+        "status": "healthy",
+
+        "service": settings.app_name,
+
+        "version": settings.app_version
     }
 
 
@@ -114,3 +130,5 @@ def health_check():
 # ---------------------------------------------------
 
 app.include_router(chat_router)
+
+app.include_router(whatsapp_router)

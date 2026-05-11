@@ -44,8 +44,8 @@ class Settings(BaseSettings):
     # -------------------------------------------------
 
     whatsapp_verify_token: str = Field(
-    ...,
-    alias="WHATSAPP_VERIFY_TOKEN"
+        ...,
+        alias="WHATSAPP_VERIFY_TOKEN"
     )
 
 
