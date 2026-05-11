@@ -6,7 +6,7 @@ from fastapi.responses import PlainTextResponse
 
 from api.core.config import settings
 from api.core.logging import get_logger
-from api.services import rag_service
+
 from api.services.whatsapp_service import (
     send_whatsapp_message
 )
@@ -26,7 +26,9 @@ router = APIRouter(
 
 @router.get("")
 
-async def verify_webhook(request: Request):
+async def verify_webhook(
+    request: Request
+):
 
     hub_mode = request.query_params.get(
         "hub.mode"
@@ -57,6 +59,7 @@ async def verify_webhook(request: Request):
         status_code=403
     )
 
+
 # ---------------------------------------------------
 # Receive WhatsApp Events
 # ---------------------------------------------------
@@ -77,11 +80,35 @@ async def receive_whatsapp_message(
 
     try:
 
-        message = (
+        # -----------------------------------------
+        # Extract Webhook Value
+        # -----------------------------------------
+
+        value = (
             payload["entry"][0]
             ["changes"][0]
-            ["value"]["messages"][0]
+            ["value"]
         )
+
+        # -----------------------------------------
+        # Ignore Status Events
+        # -----------------------------------------
+
+        if "messages" not in value:
+
+            logger.info(
+                "Ignoring non-message webhook."
+            )
+
+            return {
+                "status": "ignored"
+            }
+
+        # -----------------------------------------
+        # Extract Message
+        # -----------------------------------------
+
+        message = value["messages"][0]
 
         sender_number = message["from"]
 
@@ -96,20 +123,41 @@ async def receive_whatsapp_message(
         )
 
         # -----------------------------------------
-        # Temporary Static Reply
+        # Get Shared RAG Service
+        # -----------------------------------------
+
+        rag_service = (
+            request.app.state.rag_service
+        )
+
+        # -----------------------------------------
+        # Generate AI Response
+        # -----------------------------------------
+
+        rag_response = rag_service.ask(
+            query=message_text
+        )
+
+        answer = rag_response["answer"]
+
+        logger.info(
+            "Sending WhatsApp reply."
+        )
+
+        # -----------------------------------------
+        # Send WhatsApp Reply
         # -----------------------------------------
 
         send_whatsapp_message(
             to_number=sender_number,
-
-            message=(
-                rag_service.ask()
-            )
+            message=answer
         )
 
     except Exception as e:
 
-        logger.error(str(e))
+        logger.exception(
+            "Error processing WhatsApp webhook."
+        )
 
     return {
         "status": "received"
