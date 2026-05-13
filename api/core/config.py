@@ -116,7 +116,7 @@ class Settings(BaseSettings):
     }
 
     # ------------------------------------------------- PostgreQSL CONFIG -------------------------------------------------
-    postgres_host: str = Field(
+    database_url: str = Field(
         ...,
         alias="DATABASE_URL"
     )
