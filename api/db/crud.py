@@ -4,6 +4,27 @@ from sqlalchemy import func
 from api.db.models import Conversation
 
 
+def save_conversation(
+    db: Session,
+    phone_number: str,
+    user_message: str,
+    ai_response: str
+):
+
+    conversation = Conversation(
+        phone_number=phone_number,
+        user_message=user_message,
+        ai_response=ai_response
+    )
+
+    db.add(conversation)
+
+    db.commit()
+
+    db.refresh(conversation)
+
+    return conversation
+
 def get_conversations(
     db: Session,
     limit: int = 50
@@ -60,3 +81,4 @@ def get_dashboard_analytics(
 
         "total_users": total_users
     }
+
