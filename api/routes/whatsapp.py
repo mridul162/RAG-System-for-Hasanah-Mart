@@ -10,6 +10,18 @@ from api.core.logging import get_logger
 from api.services.whatsapp_service import (
     send_whatsapp_message
 )
+from sqlalchemy.orm import Session
+
+from api.db.dependencies import (
+    get_db
+)
+
+from api.db.crud import (
+    save_conversation
+)
+
+from fastapi import Depends
+
 
 
 logger = get_logger(__name__)
@@ -67,7 +79,8 @@ async def verify_webhook(
 @router.post("")
 
 async def receive_whatsapp_message(
-    request: Request
+    request: Request,
+    db: Session = Depends(get_db)
 ):
 
     payload = await request.json()
@@ -151,6 +164,20 @@ async def receive_whatsapp_message(
         send_whatsapp_message(
             to_number=sender_number,
             message=answer
+        )
+
+        # -----------------------------------------
+        # Save Conversation to Database
+        # -----------------------------------------
+
+        save_conversation(
+            db=db,
+
+            phone_number=sender_number,
+
+            user_message=message_text,
+
+            ai_response=answer
         )
 
     except Exception as e:
