@@ -19,6 +19,9 @@ from api.core.logging import (
 )
 from api.db.database import engine
 from api.db.models import Base
+from api.routes.dashboard import (
+    router as dashboard_router
+)
 
 
 # ---------------------------------------------------
@@ -138,3 +141,7 @@ def health_check():
 app.include_router(chat_router)
 
 app.include_router(whatsapp_router)
+
+app.include_router(
+    dashboard_router
+)

@@ -1,25 +1,59 @@
-from sqlalchemy.orm import Session
-
-from api.db.models import Conversation
+from sqlalchemy import func
 
 
-def save_conversation(
+def get_conversations(
     db: Session,
-    phone_number: str,
-    user_message: str,
-    ai_response: str
+    limit: int = 50
 ):
 
-    conversation = Conversation(
-        phone_number=phone_number,
-        user_message=user_message,
-        ai_response=ai_response
+    return (
+        db.query(Conversation)
+        .order_by(
+            Conversation.created_at.desc()
+        )
+        .limit(limit)
+        .all()
     )
 
-    db.add(conversation)
 
-    db.commit()
+def get_conversation_by_id(
+    db: Session,
+    conversation_id: int
+):
 
-    db.refresh(conversation)
+    return (
+        db.query(Conversation)
+        .filter(
+            Conversation.id == conversation_id
+        )
+        .first()
+    )
 
-    return conversation
+
+def get_dashboard_analytics(
+    db: Session
+):
+
+    total_conversations = (
+        db.query(Conversation)
+        .count()
+    )
+
+    total_users = (
+        db.query(
+            func.count(
+                func.distinct(
+                    Conversation.phone_number
+                )
+            )
+        )
+        .scalar()
+    )
+
+    return {
+        "total_conversations": (
+            total_conversations
+        ),
+
+        "total_users": total_users
+    }
