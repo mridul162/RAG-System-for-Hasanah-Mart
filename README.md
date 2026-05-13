@@ -116,6 +116,7 @@ RAG-System-for-Hasanah-Mart/
 ├── logs/
 │
 ├── Dockerfile
+├── render.yaml
 ├── requirements.txt
 └── README.md
 ```
