@@ -1,4 +1,7 @@
+from sqlalchemy.orm import Session
 from sqlalchemy import func
+
+from api.db.models import Conversation
 
 
 def get_conversations(
