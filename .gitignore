@@ -9,6 +9,13 @@ logs/
 __pycache__/
 .ipynb_checkpoints/
 
+# Temporary files
+structure.txt
+debugging_code.txt
+projectflow2.txt
+template.py
+test_api.py
+
 # C extensions
 *.so
 
