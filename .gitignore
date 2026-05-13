@@ -15,6 +15,7 @@ debugging_code.txt
 projectflow2.txt
 template.py
 test_api.py
+projectflow.md
 
 # C extensions
 *.so
