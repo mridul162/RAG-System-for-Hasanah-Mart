@@ -115,6 +115,12 @@ class Settings(BaseSettings):
         "extra": "ignore"
     }
 
+    # ------------------------------------------------- PostgreQSL CONFIG -------------------------------------------------
+    postgres_host: str = Field(
+        ...,
+        alias="postgresql://hasanah_mart_user:F1uWGQmY20HEWuibyTIwH0LnMXUJPP0Z@dpg-d820fbgjs32c738fie70-a/hasanah_mart"
+    )
+
 
 # -----------------------------------------------------
 # Cached Settings Instance

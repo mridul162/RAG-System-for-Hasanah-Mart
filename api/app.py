@@ -17,6 +17,8 @@ from api.core.logging import (
     setup_logging,
     get_logger
 )
+from api.db.database import engine
+from api.db.models import Base
 
 
 # ---------------------------------------------------
@@ -42,6 +44,10 @@ async def lifespan(app: FastAPI):
     logger.info(
         f"Starting {settings.app_name} "
         f"v{settings.app_version}"
+    )
+    
+    Base.metadata.create_all(
+        bind=engine
     )
 
     # Initialize shared RAG service
