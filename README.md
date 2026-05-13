@@ -109,6 +109,8 @@ RAG-System-for-Hasanah-Mart/
 │
 ├── notebooks/
 │
+├── rag/
+│
 ├── vector_db/
 │
 ├── logs/
